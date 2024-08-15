@@ -1,0 +1,25 @@
+/* src/components/RedundantTracker.css */
+.redundant-tracker {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .redundant-tracker h2 {
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+  }
+  
+  .redundant-tracker ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .redundant-tracker ul li {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  
