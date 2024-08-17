@@ -1,5 +1,5 @@
 // src/components/DataEntry.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import './DataEntry.css';
 
@@ -14,6 +14,16 @@ const DataEntry = () => {
   const [successMessage, setSuccessMessage] = useState('');
 
   const scannerId = 'A'; 
+
+  // Create a ref for the SKU ID input field
+  const skuInputRef = useRef(null);
+
+  useEffect(() => {
+    // Automatically focus the SKU ID input field when the component mounts
+    if (skuInputRef.current) {
+      skuInputRef.current.focus();
+    }
+  }, []);
 
   const determineStationId = (scannerId) => {
     switch (scannerId) {
@@ -110,6 +120,10 @@ const DataEntry = () => {
         stationId: '',
         type: ''
       });
+      // Re-focus the SKU ID input field after submission
+      if (skuInputRef.current) {
+        skuInputRef.current.focus();
+      }
     } catch (error) {
       setError('There was an error submitting the data. Please try again.');
     } finally {
@@ -161,6 +175,7 @@ const DataEntry = () => {
             placeholder="Scan SKU ID"
             required
             autoFocus
+            ref={skuInputRef} // Attach the ref to the input field
           />
         </div>
         <div className="form-group">
