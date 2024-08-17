@@ -22,7 +22,6 @@ const DataTable = () => {
             <th>Date of Scan</th>
             <th>Timestamp</th>
             <th>Station ID</th>
-            <th>Type of Order</th>
           </tr>
         </thead>
         <tbody>
@@ -32,7 +31,6 @@ const DataTable = () => {
               <td>{row.dateOfScan}</td>
               <td>{row.timestamp}</td>
               <td>{row.stationId}</td>
-              <td>{row.type}</td>
             </tr>
           ))}
         </tbody>

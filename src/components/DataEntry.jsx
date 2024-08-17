@@ -7,7 +7,6 @@ const DataEntry = () => {
   const [formData, setFormData] = useState({
     skuId: '',
     stationId: '', 
-    type: '' 
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(null);
@@ -118,7 +117,6 @@ const DataEntry = () => {
       setFormData({
         skuId: '',
         stationId: '',
-        type: ''
       });
       // Re-focus the SKU ID input field after submission
       if (skuInputRef.current) {
@@ -142,22 +140,6 @@ const DataEntry = () => {
     if (name === 'skuId' && value) {
       handleScan();
     }
-  };
-
-  const handleTypeInput = (e) => {
-    const value = e.target.value.toLowerCase();
-    let type = value;
-
-    if (value.startsWith('c')) {
-      type = 'Customer';
-    } else if (value.startsWith('s')) {
-      type = 'Store';
-    }
-
-    setFormData(prevState => ({
-      ...prevState,
-      type
-    }));
   };
 
   return (
@@ -187,18 +169,6 @@ const DataEntry = () => {
             value={formData.stationId}
             placeholder="Station ID"
             readOnly 
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="type">Type of Order</label>
-          <input
-            type="text"
-            id="type"
-            name="type"
-            value={formData.type}
-            onChange={handleTypeInput}
-            placeholder="Type of Order (e.g., Customer or Store)"
-            required
           />
         </div>
       </form>
