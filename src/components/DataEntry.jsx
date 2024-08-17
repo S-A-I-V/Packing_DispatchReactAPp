@@ -1,5 +1,5 @@
 // src/components/DataEntry.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import './DataEntry.css';
 
@@ -87,8 +87,7 @@ const DataEntry = () => {
     return [year, month, day].join('-') + ' ' + [hours, minutes, seconds].join(':');
   }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleScan = async () => {
     setIsSubmitting(true);
     setError(null);
     setSuccessMessage('');
@@ -124,6 +123,11 @@ const DataEntry = () => {
       ...prevState,
       [name]: value
     }));
+
+    // Automatically submit the form when SKU ID is filled
+    if (name === 'skuId' && value) {
+      handleScan();
+    }
   };
 
   const handleTypeInput = (e) => {
@@ -145,7 +149,7 @@ const DataEntry = () => {
   return (
     <div className="data-entry">
       <h2>Data Entry</h2>
-      <form onSubmit={handleSubmit}>
+      <form>
         <div className="form-group">
           <label htmlFor="skuId">Scan SKU ID</label>
           <input
@@ -182,9 +186,6 @@ const DataEntry = () => {
             required
           />
         </div>
-        <button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? 'Submitting...' : 'Submit'}
-        </button>
       </form>
       {error && <p className="error">{error}</p>}
       {successMessage && <p className="success">{successMessage}</p>}
@@ -193,5 +194,3 @@ const DataEntry = () => {
 };
 
 export default DataEntry;
-
-
