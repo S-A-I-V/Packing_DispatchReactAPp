@@ -1,6 +1,7 @@
-// src/components/DataTable.jsx
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Box } from "@mui/material";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import './DataTable.css';
 
 const DataTable = () => {
@@ -12,30 +13,62 @@ const DataTable = () => {
       .catch(error => console.error('Error fetching data:', error));
   }, []);
 
+  const columns = [
+    { field: "skuId", headerName: "SKU ID", flex: 1 },
+    { field: "dateOfScan", headerName: "Date of Scan", flex: 1 },
+    { field: "timestamp", headerName: "Timestamp", flex: 1 },
+    { field: "stationId", headerName: "Station ID", flex: 1 },
+  ];
+
+  const rows = data.map((row, index) => ({
+    id: index,
+    skuId: row.skuId,
+    dateOfScan: row.dateOfScan,
+    timestamp: row.timestamp,
+    stationId: row.stationId,
+  }));
+
   return (
-    <div className="data-table">
+    <Box m="20px">
       <h2>Data Table</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>SKU ID</th>
-            <th>Date of Scan</th>
-            <th>Timestamp</th>
-            <th>Station ID</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((row, index) => (
-            <tr key={index}>
-              <td>{row.skuId}</td>
-              <td>{row.dateOfScan}</td>
-              <td>{row.timestamp}</td>
-              <td>{row.stationId}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+      <Box
+        m="20px 0 0 0"
+        height="75vh"
+        sx={{
+          "& .MuiDataGrid-root": {
+            border: "none",
+          },
+          "& .MuiDataGrid-cell": {
+            borderBottom: "none",
+          },
+          "& .MuiDataGrid-columnHeaders": {
+            backgroundColor: "#1A237E",
+            color: "#FFF",
+            borderBottom: "none",
+          },
+          "& .MuiDataGrid-virtualScroller": {
+            backgroundColor: "#E8EAF6",
+          },
+          "& .MuiDataGrid-footerContainer": {
+            borderTop: "none",
+            backgroundColor: "#1A237E",
+            color: "#FFF",
+          },
+          "& .MuiCheckbox-root": {
+            color: "#1A237E",
+          },
+          "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
+            color: "#1A237E",
+          },
+        }}
+      >
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          components={{ Toolbar: GridToolbar }}
+        />
+      </Box>
+    </Box>
   );
 };
 
