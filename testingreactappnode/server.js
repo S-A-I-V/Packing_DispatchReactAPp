@@ -28,10 +28,10 @@ db.connect(err => {
 
 // API endpoint to handle data entry
 app.post('/api/data-entry', (req, res) => {
-  const { skuId, dateOfScan, timestamp, stationId, type } = req.body;
-  const query = 'INSERT INTO entries (skuId, dateOfScan, timestamp, stationId, type) VALUES (?, ?, ?, ?, ?)';
+  const { skuId, dateOfScan, timestamp, stationId } = req.body;
+  const query = 'INSERT INTO entries (skuId, dateOfScan, timestamp, stationId) VALUES (?, ?, ?, ?)';
 
-  db.query(query, [skuId, dateOfScan, timestamp, stationId, type], (err) => {
+  db.query(query, [skuId, dateOfScan, timestamp, stationId], (err) => {
     if (err) {
       console.error('Error inserting data:', err.stack);
       res.status(500).send('Error inserting data');

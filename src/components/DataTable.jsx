@@ -30,28 +30,32 @@ const DataTable = () => {
 
   return (
     <Box m="20px">
-      <h2>Data Table</h2>
+      <h2 style={{ color: '#FFFFFF', marginBottom: '10px', textAlign: 'center' }}>Data Table</h2>
       <Box
         m="20px 0 0 0"
         height="75vh"
         sx={{
           "& .MuiDataGrid-root": {
             border: "none",
+            fontSize: "16px", // Makes text slightly larger to match the provided UI
           },
           "& .MuiDataGrid-cell": {
             borderBottom: "none",
+            color: "#E0E0E0", // Lighter text color for readability
           },
           "& .MuiDataGrid-columnHeaders": {
-            backgroundColor: "#1A237E",
+            backgroundColor: "#2C3E50", // Darker background similar to the provided UI
             color: "#FFF",
             borderBottom: "none",
+            fontSize: "18px", // Larger font size for column headers
+            fontWeight: 'bold', // Bold column headers
           },
           "& .MuiDataGrid-virtualScroller": {
-            backgroundColor: "#E8EAF6",
+            backgroundColor: "#34495E", // Background color for the data rows
           },
           "& .MuiDataGrid-footerContainer": {
             borderTop: "none",
-            backgroundColor: "#1A237E",
+            backgroundColor: "#2C3E50",
             color: "#FFF",
           },
           "& .MuiCheckbox-root": {
@@ -66,6 +70,9 @@ const DataTable = () => {
           rows={rows}
           columns={columns}
           components={{ Toolbar: GridToolbar }}
+          disableColumnMenu={false}
+          disableColumnSelector={false}
+          disableSelectionOnClick={true}
         />
       </Box>
     </Box>
