@@ -1,26 +1,48 @@
-// src/components/RedundantTracker.jsx
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './RedundantTracker.css';
-import { useRef } from 'react';
 
 const RedundantTracker = () => {
-  const [redundantIds, setRedundantIds] = useState([]);
+  const [redundantEntries, setRedundantEntries] = useState([]);
 
   useEffect(() => {
     axios.get('http://localhost:5000/api/redundant-skus')
-      .then(response => setRedundantIds(response.data))
+      .then(response => {
+        console.log("Redundant SKUs fetched: ", response.data); 
+        setRedundantEntries(response.data);
+      })
       .catch(error => console.error('Error fetching redundant SKUs:', error));
   }, []);
 
   return (
     <div className="redundant-tracker">
       <h2>Redundant SKU Tracker</h2>
-      <ul>
-        {redundantIds.map((id, index) => (
-          <li key={index}>{id}</li>
-        ))}
-      </ul>
+      {redundantEntries.length > 0 ? (
+        <table>
+          <thead>
+            <tr>
+              <th>SKU ID</th>
+              <th>Station ID</th>
+              <th>Scan Count</th>
+              <th>Most Recent Date</th>
+              <th>Most Recent Timestamp</th>
+            </tr>
+          </thead>
+          <tbody>
+            {redundantEntries.map((entry, index) => (
+              <tr key={index}>
+                <td>{entry.skuId}</td>
+                <td>{entry.stationId}</td>
+                <td>{entry.scanCount}</td>
+                <td>{entry.mostRecentDate}</td>
+                <td>{entry.mostRecentTimestamp}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <p>No redundant SKUs found.</p>
+      )}
     </div>
   );
 };

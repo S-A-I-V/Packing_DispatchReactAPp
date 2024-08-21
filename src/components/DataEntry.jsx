@@ -5,7 +5,7 @@ import './DataEntry.css';
 const DataEntry = () => {
   const [formData, setFormData] = useState({
     skuId: '',
-    stationId: process.env.REACT_APP_STATION_ID || '3', // Set station ID from environment variable
+    stationId: process.env.REACT_APP_STATION_ID || '1', // Set station ID from environment variable
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(null);
@@ -65,6 +65,16 @@ const DataEntry = () => {
     };
 
     try {
+      // Check for redundancy
+      const { data } = await axios.get('http://localhost:5000/api/check-duplicate', {
+        params: { skuId: formData.skuId, stationId: formData.stationId },
+      });
+
+      if (data.isDuplicate) {
+        alert('You are scanning a duplicate entry, hand over to shipping incharge');
+      }
+
+      // Proceed with submission
       await axios.post('http://localhost:5000/api/data-entry', updatedFormData);
       setSuccessMessage('Data submitted successfully');
       setFormData({

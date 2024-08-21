@@ -1,4 +1,3 @@
-// server.js
 const express = require('express');
 const mysql = require('mysql');
 const cors = require('cors');
@@ -41,6 +40,22 @@ app.post('/api/data-entry', (req, res) => {
   });
 });
 
+// API endpoint to check for duplicate SKU ID and Station ID
+app.get('/api/check-duplicate', (req, res) => {
+  const { skuId, stationId } = req.query;
+  const query = 'SELECT COUNT(*) AS count FROM entries WHERE skuId = ? AND stationId = ?';
+
+  db.query(query, [skuId, stationId], (err, results) => {
+    if (err) {
+      console.error('Error checking for duplicates:', err.stack);
+      res.status(500).send('Error checking for duplicates');
+      return;
+    }
+    const isDuplicate = results[0].count > 0;
+    res.json({ isDuplicate });
+  });
+});
+
 // API endpoint to retrieve data for the table
 app.get('/api/data', (req, res) => {
   const query = 'SELECT * FROM entries';
@@ -54,6 +69,43 @@ app.get('/api/data', (req, res) => {
     res.json(results);
   });
 });
+
+// // API endpoint to fetch redundant SKUs with the most recent date and timestamp
+// app.get('/api/redundant-skus', (req, res) => {
+//   const query = `
+//     SELECT skuId, stationId, COUNT(*) as scanCount, MAX(dateOfScan) as recentDate, MAX(timestamp) as recentTimestamp
+//     FROM entries 
+//     GROUP BY skuId, stationId 
+//     HAVING COUNT(*) > 1;
+//   `;
+
+//   db.query(query, (err, results) => {
+//     if (err) {
+//       console.error('Error fetching redundant SKUs:', err.stack);
+//       res.status(500).send('Error fetching redundant SKUs');
+//       return;
+//     }
+//     res.json(results);
+//   });
+// });
+app.get('/api/redundant-skus', (req, res) => {
+  const query = `
+    SELECT skuId, stationId, COUNT(*) as scanCount, MAX(dateOfScan) as mostRecentDate, MAX(timestamp) as mostRecentTimestamp
+    FROM entries
+    GROUP BY skuId, stationId
+    HAVING scanCount > 1;
+  `;
+
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error('Error fetching redundant SKUs:', err.stack);
+      res.status(500).send('Error fetching redundant SKUs');
+      return;
+    }
+    res.json(results);
+  });
+});
+
 
 // Start the server
 app.listen(port, () => {
