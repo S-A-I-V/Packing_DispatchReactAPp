@@ -15,6 +15,7 @@ const DataTable = () => {
 
   const columns = [
     { field: "skuId", headerName: "SKU ID", flex: 1 },
+    { field: "nexsId", headerName: "NEXS ID", flex: 1 },  // Added NEXS ID
     { field: "dateOfScan", headerName: "Date of Scan", flex: 1 },
     { field: "timestamp", headerName: "Timestamp", flex: 1 },
     { field: "stationId", headerName: "Station ID", flex: 1 },
@@ -23,6 +24,7 @@ const DataTable = () => {
   const rows = data.map((row, index) => ({
     id: index,
     skuId: row.skuId,
+    nexsId: row.nexsId,  // Map NEXS ID
     dateOfScan: row.dateOfScan,
     timestamp: row.timestamp,
     stationId: row.stationId,

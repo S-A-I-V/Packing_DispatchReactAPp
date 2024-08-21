@@ -6,6 +6,7 @@ const DataEntry = () => {
   const [formData, setFormData] = useState({
     skuId: '',
     stationId: process.env.REACT_APP_STATION_ID || '1', // Set station ID from environment variable
+    nexsId: process.env.REACT_APP_NEXS_ID || '00000001', // Set nexsId from environment variable
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(null);
@@ -73,13 +74,13 @@ const DataEntry = () => {
       if (data.isDuplicate) {
         alert('You are scanning a duplicate entry, hand over to shipping incharge');
       }
-
-      // Proceed with submission
+      
       await axios.post('http://localhost:5000/api/data-entry', updatedFormData);
       setSuccessMessage('Data submitted successfully');
       setFormData({
         skuId: '',
         stationId: formData.stationId,
+        nexsId: formData.nexsId, // Retain nexsId after submission
       });
       if (skuInputRef.current) {
         skuInputRef.current.focus();
@@ -134,8 +135,19 @@ const DataEntry = () => {
             id="stationId"
             name="stationId"
             value={formData.stationId}
+            onChange={handleChange}  // Allow editing
             placeholder="Station ID"
-            readOnly
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="nexsId">NEXS ID</label>
+          <input
+            type="text"
+            id="nexsId"
+            name="nexsId"
+            value={formData.nexsId}
+            onChange={handleChange}  // Allow editing
+            placeholder="NEXS ID"
           />
         </div>
       </form>

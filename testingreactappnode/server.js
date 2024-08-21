@@ -27,10 +27,10 @@ db.connect(err => {
 
 // API endpoint to handle data entry
 app.post('/api/data-entry', (req, res) => {
-  const { skuId, dateOfScan, timestamp, stationId } = req.body;
-  const query = 'INSERT INTO entries (skuId, dateOfScan, timestamp, stationId) VALUES (?, ?, ?, ?)';
+  const { skuId, dateOfScan, timestamp, stationId, nexsId } = req.body;
+  const query = 'INSERT INTO entries (skuId, dateOfScan, timestamp, stationId, nexsId) VALUES (?, ?, ?, ?, ?)';
 
-  db.query(query, [skuId, dateOfScan, timestamp, stationId], (err) => {
+  db.query(query, [skuId, dateOfScan, timestamp, stationId, nexsId], (err) => {
     if (err) {
       console.error('Error inserting data:', err.stack);
       res.status(500).send('Error inserting data');
@@ -56,7 +56,7 @@ app.get('/api/check-duplicate', (req, res) => {
   });
 });
 
-// API endpoint to retrieve data for the table
+// API endpoint to retrieve all data
 app.get('/api/data', (req, res) => {
   const query = 'SELECT * FROM entries';
 
@@ -70,24 +70,7 @@ app.get('/api/data', (req, res) => {
   });
 });
 
-// // API endpoint to fetch redundant SKUs with the most recent date and timestamp
-// app.get('/api/redundant-skus', (req, res) => {
-//   const query = `
-//     SELECT skuId, stationId, COUNT(*) as scanCount, MAX(dateOfScan) as recentDate, MAX(timestamp) as recentTimestamp
-//     FROM entries 
-//     GROUP BY skuId, stationId 
-//     HAVING COUNT(*) > 1;
-//   `;
-
-//   db.query(query, (err, results) => {
-//     if (err) {
-//       console.error('Error fetching redundant SKUs:', err.stack);
-//       res.status(500).send('Error fetching redundant SKUs');
-//       return;
-//     }
-//     res.json(results);
-//   });
-// });
+// API endpoint to fetch redundant SKUs with the most recent date and timestamp
 app.get('/api/redundant-skus', (req, res) => {
   const query = `
     SELECT skuId, stationId, COUNT(*) as scanCount, MAX(dateOfScan) as mostRecentDate, MAX(timestamp) as mostRecentTimestamp
@@ -105,7 +88,6 @@ app.get('/api/redundant-skus', (req, res) => {
     res.json(results);
   });
 });
-
 
 // Start the server
 app.listen(port, () => {
