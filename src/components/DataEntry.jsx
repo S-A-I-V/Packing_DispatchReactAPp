@@ -75,7 +75,7 @@ const DataEntry = () => {
         alert('You are scanning a duplicate entry, hand over to shipping incharge');
       }
       
-      await axios.post('http://localhost:5000/api/data-entry', updatedFormData);
+      await axios.post('${process.env.REACT_APP_API_URL}/data/api/data-entry', updatedFormData);
       setSuccessMessage('Data submitted successfully');
       setFormData({
         skuId: '',
