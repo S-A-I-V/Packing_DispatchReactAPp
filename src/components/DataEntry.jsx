@@ -67,7 +67,7 @@ const DataEntry = () => {
 
     try {
       // Check for redundancy
-      const { data } = await axios.get('http://localhost:5000/api/check-duplicate', {
+      const { data } = await axios.get('${process.env.REACT_APP_API_URL}/data', {
         params: { skuId: formData.skuId, stationId: formData.stationId },
       });
 

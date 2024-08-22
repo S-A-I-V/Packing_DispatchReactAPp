@@ -8,7 +8,7 @@ const DataTable = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/data')
+    axios.get('${process.env.REACT_APP_API_URL}/data')
       .then(response => setData(response.data))
       .catch(error => console.error('Error fetching data:', error));
   }, []);
