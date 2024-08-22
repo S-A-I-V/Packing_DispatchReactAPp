@@ -67,7 +67,7 @@ const DataEntry = () => {
 
     try {
       // Check for redundancy
-      const { data } = await axios.get('${process.env.REACT_APP_API_URL}/data', {
+      const { data } = await axios.get('http://localhost:5000/api/check-duplicate', {
         params: { skuId: formData.skuId, stationId: formData.stationId },
       });
 
@@ -75,7 +75,7 @@ const DataEntry = () => {
         alert('You are scanning a duplicate entry, hand over to shipping incharge');
       }
       
-      await axios.post('${process.env.REACT_APP_API_URL}/data/api/data-entry', updatedFormData);
+      await axios.post('http://localhost:5000/api/data-entry', updatedFormData);
       setSuccessMessage('Data submitted successfully');
       setFormData({
         skuId: '',

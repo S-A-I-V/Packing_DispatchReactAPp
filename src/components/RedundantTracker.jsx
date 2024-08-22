@@ -6,7 +6,7 @@ const RedundantTracker = () => {
   const [redundantEntries, setRedundantEntries] = useState([]);
 
   useEffect(() => {
-    axios.get('${process.env.REACT_APP_API_URL}/data')
+    axios.get('http://localhost:5000/api/redundant-skus')
       .then(response => {
         console.log("Redundant SKUs fetched: ", response.data); 
         setRedundantEntries(response.data);
