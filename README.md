@@ -1,70 +1,123 @@
-# Getting Started with Create React App
+# Packing and Dispatch Monitoring System
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Welcome to the **Packing and Dispatch Monitoring System**! This project is designed to streamline the process of packing and dispatching items in a warehouse setting by utilizing a responsive React.js web application. The application offers real-time barcode scanning, data entry, and a user-friendly interface for managing and monitoring the packing process.
 
-## Available Scripts
+## Table of Contents
 
-In the project directory, you can run:
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Project Structure](#project-structure)
+- [Environment Variables](#environment-variables)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
 
-### `npm start`
+## Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **Real-time Barcode Scanning**: Seamless integration with barcode readers for efficient data entry.
+- **Redundancy Tracking**: Automatically detects and alerts on duplicate entries to prevent errors.
+- **Station-wise Analytics**: Track performance metrics for each station, helping to identify high and low performers.
+- **Data Export**: Easily export collected data as CSV files for further analysis.
+- **Responsive Design**: A user-friendly interface that adapts to various screen sizes.
+- **Customizable Order Types**: Dropdown selection for order types such as Customer (C) or Store (S).
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Tech Stack
 
-### `npm test`
+- **Frontend**: React.js
+- **Backend**: Node.js, Express.js
+- **Database**: MySQL
+- **Analytics**: Grafana
+- **Containerization**: Docker
+- **Version Control**: Git, GitHub
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Installation
 
-### `npm run build`
+### Prerequisites
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- **Node.js** (>= 14.x)
+- **MySQL** database
+- **Docker** (optional, for containerization)
+- **Git** for version control
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Steps
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. **Clone the repository:**
+    ```bash
+    git clone https://github.com/S-A-I-V/Packing_DispatchReactAPp.git
+    cd Packing_DispatchReactAPp
+    ```
 
-### `npm run eject`
+2. **Install the dependencies:**
+    ```bash
+    npm install
+    ```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+3. **Set up the database:**
+   - Create a MySQL database.
+   - Configure the environment variables in the `.env` file (see [Environment Variables](#environment-variables)).
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+4. **Start the application:**
+   - For development:
+     ```bash
+     npm start
+     ```
+   - Using Docker:
+     ```bash
+     docker-compose up
+     ```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Usage
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Running the Application
 
-## Learn More
+1. **Data Entry Mode**: 
+   - Use the barcode scanner to scan items.
+   - The system will automatically log the data and associate it with the correct station.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+2. **Redundancy Alert**:
+   - If a duplicate entry is scanned, a pop-up will alert with the message: "You are scanning a duplicate entry, hand over to shipping incharge."
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+3. **Analytics Mode**:
+   - Navigate to the analytics section to view station-wise performance metrics.
 
-### Code Splitting
+### Export Data
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- **CSV Export**: Export the current data set as a CSV file for further analysis.
 
-### Analyzing the Bundle Size
+## Project Structure
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Packing_DispatchReactAPp/ ├── public/ ├── src/ │ ├── components/ │ ├── pages/ │ ├── services/ │ ├── App.js │ ├── index.js ├── .env ├── package.json ├── Dockerfile ├── docker-compose.yml └── README.md
 
-### Making a Progressive Web App
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## Environment Variables
 
-### Advanced Configuration
+Create a `.env` file in the root directory and configure the following variables:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+REACT_APP_API_URL=http://localhost:5000/api
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=your_password
+DB_NAME=packing_dispatch
+Contributing
+We welcome contributions! If you'd like to contribute, please fork the repository and submit a pull request.
 
-### Deployment
+Steps to Contribute:
+Fork the repository.
+Create a new branch (git checkout -b feature-branch).
+Make your changes.
+Commit your changes (git commit -m 'Add some feature').
+Push to the branch (git push origin feature-branch).
+Open a pull request.
+License
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Contact
+For any questions or suggestions, please feel free to reach out:
 
-### `npm run build` fails to minify
+GitHub: S-A-I-V
+Email: saideep.verma01@gmail.com
+Thank you for using the Packing and Dispatch Monitoring System! We hope it makes your workflow more efficient and error-free.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This `README.md` provides a comprehensive overview of your project, making it easy for other
