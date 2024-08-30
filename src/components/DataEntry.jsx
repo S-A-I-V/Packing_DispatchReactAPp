@@ -101,27 +101,11 @@ const DataEntry = () => {
     }
   };
 
-  const isValidStationId = (stationId) => {
-    const validP = /^P0([0-1][0-9]|20)$/; // Matches P001 - P020
-    const validF = /^F0([0-1][0-9]|10)$/; // Matches F001 - F010
-    return validP.test(stationId) || validF.test(stationId);
-  };
-
   const handleChange = (e) => {
     const { name, value } = e.target;
-    let newValue = value;
-
-    if (name === 'stationId') {
-      if (isValidStationId(newValue)) {
-        setError(null);  // Clear error if the Station ID is valid
-      } else {
-        setError('Invalid Station ID. It must be between P001-P020 or F001-F010.');
-      }
-    }
-
     setFormData((prevState) => ({
       ...prevState,
-      [name]: newValue,
+      [name]: value,
     }));
   };
 
@@ -146,16 +130,25 @@ const DataEntry = () => {
         </div>
         <div className="form-group">
           <label htmlFor="stationId">Station ID</label>
-          <input
-            type="text"
+          <select
             id="stationId"
             name="stationId"
             value={formData.stationId}
             onChange={handleChange}
-            placeholder="Station ID (e.g., P001-P020, F001-F010)"
-            maxLength="4"
             required
-          />
+          >
+            <option value="" disabled>Select Station ID</option>
+            {[...Array(20).keys()].map(i => (
+              <option key={`P${String(i + 1).padStart(3, '0')}`} value={`P${String(i + 1).padStart(3, '0')}`}>
+                P{String(i + 1).padStart(3, '0')}
+              </option>
+            ))}
+            {[...Array(10).keys()].map(i => (
+              <option key={`F${String(i + 1).padStart(3, '0')}`} value={`F${String(i + 1).padStart(3, '0')}`}>
+                F{String(i + 1).padStart(3, '0')}
+              </option>
+            ))}
+          </select>
         </div>
         <div className="form-group">
           <label htmlFor="nexsId">NEXS ID</label>
