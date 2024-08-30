@@ -1,69 +1,93 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Box } from "@mui/material";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import './RedundantTracker.css';
 
 const RedundantTracker = () => {
   const [redundantEntries, setRedundantEntries] = useState([]);
-  const [filteredEntries, setFilteredEntries] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     axios.get('http://192.168.27.143:5000/api/redundant-skus')
       .then(response => {
         console.log("Redundant SKUs fetched: ", response.data); 
         setRedundantEntries(response.data);
-        setFilteredEntries(response.data);
       })
       .catch(error => console.error('Error fetching redundant SKUs:', error));
   }, []);
 
-  // Handle search filtering
-  useEffect(() => {
-    const filtered = redundantEntries.filter(entry =>
-      entry.skuId.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    setFilteredEntries(filtered);
-  }, [searchTerm, redundantEntries]);
+  const columns = [
+    { field: "skuId", headerName: "SKU ID", flex: 1 },
+    { field: "stationId", headerName: "Station ID", flex: 1 },
+    { field: "scanCount", headerName: "Scan Count", flex: 1 },
+    { field: "mostRecentDate", headerName: "Most Recent Date", flex: 1 },
+    { field: "mostRecentTimestamp", headerName: "Most Recent Timestamp", flex: 1 },
+  ];
+
+  const rows = redundantEntries.map((entry, index) => ({
+    id: index,
+    skuId: entry.skuId,
+    stationId: entry.stationId,
+    scanCount: entry.scanCount,
+    mostRecentDate: entry.mostRecentDate,
+    mostRecentTimestamp: entry.mostRecentTimestamp,
+  }));
 
   return (
-    <div className="redundant-tracker">
-      <h2>Redundant SKU Tracker</h2>
-      <input
-        type="text"
-        placeholder="Search by SKU ID"
-        value={searchTerm}
-        onChange={e => setSearchTerm(e.target.value)}
-        className="search-input"
-      />
-      {filteredEntries.length > 0 ? (
-        <div className="table-container">
-          <table>
-            <thead>
-              <tr>
-                <th>SKU ID</th>
-                <th>Station ID</th>
-                <th>Scan Count</th>
-                <th>Most Recent Date</th>
-                <th>Most Recent Timestamp</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredEntries.map((entry, index) => (
-                <tr key={index}>
-                  <td>{entry.skuId}</td>
-                  <td>{entry.stationId}</td>
-                  <td>{entry.scanCount}</td>
-                  <td>{entry.mostRecentDate}</td>
-                  <td>{entry.mostRecentTimestamp}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      ) : (
-        <p>No redundant SKUs found.</p>
-      )}
-    </div>
+    <Box m="20px">
+      <h2 style={{ color: '#FFFFFF', marginBottom: '10px', textAlign: 'center' }}>Redundant SKU Tracker</h2>
+      <Box
+        m="20px 0 0 0"
+        height="75vh"
+        sx={{
+          "& .MuiDataGrid-root": {
+            border: "none",
+            fontSize: "16px", // Makes text slightly larger to match the provided UI
+          },
+          "& .MuiDataGrid-cell": {
+            borderBottom: "none",
+            color: "#E0E0E0", // Lighter text color for readability
+          },
+          "& .MuiDataGrid-columnHeaders": {
+            backgroundColor: "#2C3E50", // Darker background similar to the provided UI
+            color: "#FFF",
+            borderBottom: "none",
+            fontSize: "18px", // Larger font size for column headers
+            fontWeight: 'bold', // Bold column headers
+          },
+          "& .MuiDataGrid-virtualScroller": {
+            backgroundColor: "#34495E", // Background color for the data rows
+          },
+          "& .MuiDataGrid-footerContainer": {
+            borderTop: "none",
+            backgroundColor: "#2C3E50",
+            color: "#FFF",
+          },
+          "& .MuiCheckbox-root": {
+            color: "#1A237E",
+          },
+          "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
+            color: "#1A237E",
+          },
+        }}
+      >
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          components={{ Toolbar: GridToolbar }}
+          disableColumnMenu={false}
+          disableColumnSelector={false}
+          disableSelectionOnClick={true}
+          initialState={{
+            filter: {
+              filterModel: {
+                items: [],
+              },
+            },
+          }}
+        />
+      </Box>
+    </Box>
   );
 };
 

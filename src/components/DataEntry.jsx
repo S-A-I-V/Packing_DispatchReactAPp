@@ -5,7 +5,7 @@ import './DataEntry.css';
 const DataEntry = () => {
   const [formData, setFormData] = useState({
     skuId: '',
-    stationId: process.env.REACT_APP_STATION_ID || '1', 
+    stationId: process.env.REACT_APP_STATION_ID || '', 
     nexsId: process.env.REACT_APP_NEXS_ID || '00000001', 
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -101,11 +101,27 @@ const DataEntry = () => {
     }
   };
 
+  const isValidStationId = (stationId) => {
+    const validP = /^P0([0-1][0-9]|20)$/; // Matches P001 - P020
+    const validF = /^F0([0-1][0-9]|10)$/; // Matches F001 - F010
+    return validP.test(stationId) || validF.test(stationId);
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
+    let newValue = value;
+
+    if (name === 'stationId') {
+      if (isValidStationId(newValue)) {
+        setError(null);  // Clear error if the Station ID is valid
+      } else {
+        setError('Invalid Station ID. It must be between P001-P020 or F001-F010.');
+      }
+    }
+
     setFormData((prevState) => ({
       ...prevState,
-      [name]: value,
+      [name]: newValue,
     }));
   };
 
@@ -135,8 +151,10 @@ const DataEntry = () => {
             id="stationId"
             name="stationId"
             value={formData.stationId}
-            onChange={handleChange}  
-            placeholder="Station ID"
+            onChange={handleChange}
+            placeholder="Station ID (e.g., P001-P020, F001-F010)"
+            maxLength="4"
+            required
           />
         </div>
         <div className="form-group">
@@ -146,7 +164,7 @@ const DataEntry = () => {
             id="nexsId"
             name="nexsId"
             value={formData.nexsId}
-            onChange={handleChange}  
+            onChange={handleChange}
             placeholder="NEXS ID"
           />
         </div>
