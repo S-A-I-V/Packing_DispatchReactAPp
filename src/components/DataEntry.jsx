@@ -11,6 +11,7 @@ const DataEntry = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState('');
+  const [isDisabled, setIsDisabled] = useState(false);
 
   const skuInputRef = useRef(null);
 
@@ -58,9 +59,16 @@ const DataEntry = () => {
 
   const handleScan = async () => {
     if (formData.skuId.length === 20) {
+      if (formData.stationId === '' || formData.nexsId === '00000001') {
+        setError('Station ID or NEXS ID cannot be default values.');
+        setIsSubmitting(false);
+        return; // Prevent further execution
+      }
+      
       setIsSubmitting(true);
       setError(null);
       setSuccessMessage('');
+      setIsDisabled(true); // Disable input during processing
 
       const timestamp = formatTimestamp(new Date());
       const dateOfScan = formatDate(new Date());
@@ -88,12 +96,22 @@ const DataEntry = () => {
           stationId: formData.stationId,
           nexsId: formData.nexsId,
         });
-        if (skuInputRef.current) {
-          skuInputRef.current.focus();
-        }
       } catch (error) {
         setError('There was an error submitting the data. Please try again.');
       } finally {
+        setTimeout(() => {
+          setIsDisabled(false); // Re-enable input after 10 seconds
+          setFormData((prevState) => ({
+            ...prevState,
+            skuId: '', // Clear the SKU ID field
+          }));
+          // Use a callback to ensure focus happens after state updates
+          setTimeout(() => {
+            if (skuInputRef.current) {
+              skuInputRef.current.focus(); // Focus on the SKU ID input
+            }
+          }, 0);
+        }, 10000);
         setIsSubmitting(false);
       }
     } else {
@@ -126,6 +144,7 @@ const DataEntry = () => {
             autoFocus
             ref={skuInputRef}
             maxLength="20"
+            disabled={isDisabled} // Disable input if isDisabled is true
           />
         </div>
         <div className="form-group">
@@ -136,6 +155,7 @@ const DataEntry = () => {
             value={formData.stationId}
             onChange={handleChange}
             required
+            disabled={isDisabled} // Disable input if isDisabled is true
           >
             <option value="" disabled>Select Station ID</option>
             {[...Array(20).keys()].map(i => (
@@ -159,6 +179,7 @@ const DataEntry = () => {
             value={formData.nexsId}
             onChange={handleChange}
             placeholder="NEXS ID"
+            disabled={isDisabled} // Disable input if isDisabled is true
           />
         </div>
       </form>
