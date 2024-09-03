@@ -82,7 +82,7 @@ const DataEntry = () => {
       try {
         // Check for redundancy
         const { data } = await axios.get('http://192.168.27.143:5000/api/check-duplicate', {
-          params: { skuId: formData.skuId, stationId: formData.stationId },
+          params: { skuId: formData.skuId }
         });
 
         if (data.isDuplicate) {
@@ -123,7 +123,7 @@ const DataEntry = () => {
     const { name, value } = e.target;
     setFormData((prevState) => ({
       ...prevState,
-      [name]: value,
+      [name]: name === 'nexsId' ? value.toUpperCase() : value, // Convert nexsId to uppercase
     }));
   };
 
