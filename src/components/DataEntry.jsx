@@ -22,7 +22,7 @@ const DataEntry = () => {
   }, []);
 
   useEffect(() => {
-    if (formData.skuId.length === 20) {
+    if (formData.skuId.length === 20 && !isSubmitting) {
       handleScan();
     }
   }, [formData.skuId]);
@@ -58,13 +58,14 @@ const DataEntry = () => {
   };
 
   const handleScan = async () => {
-    if (formData.skuId.length === 20) {
+    // Check if SKU ID is valid and if it starts as blank
+    if (formData.skuId.length === 20 && !isSubmitting) {
       if (formData.stationId === '' || formData.nexsId === '00000001') {
         setError('Station ID or NEXS ID cannot be default values.');
         setIsSubmitting(false);
         return; // Prevent further execution
       }
-      
+
       setIsSubmitting(true);
       setError(null);
       setSuccessMessage('');
@@ -75,6 +76,7 @@ const DataEntry = () => {
 
       const updatedFormData = {
         ...formData,
+        nexsId: formData.nexsId.trim(), // Trim spaces from nexsId
         dateOfScan,
         timestamp,
       };
@@ -115,7 +117,7 @@ const DataEntry = () => {
         setIsSubmitting(false);
       }
     } else {
-      setError('SKU ID must be exactly 20 characters.');
+      setError('SKU ID must be exactly 20 characters and field should be blank before scanning.');
     }
   };
 
@@ -123,7 +125,7 @@ const DataEntry = () => {
     const { name, value } = e.target;
     setFormData((prevState) => ({
       ...prevState,
-      [name]: name === 'nexsId' ? value.toUpperCase() : value, // Convert nexsId to uppercase
+      [name]: name === 'nexsId' ? value.trim().toUpperCase() : value, // Trim spaces and convert nexsId to uppercase
     }));
   };
 
