@@ -58,31 +58,29 @@ const DataEntry = () => {
   };
 
   const handleScan = async () => {
-    // Check if SKU ID is valid and if it starts as blank
     if (formData.skuId.length === 20 && !isSubmitting) {
       if (formData.stationId === '' || formData.nexsId === '00000001') {
         setError('Station ID or NEXS ID cannot be default values.');
         setIsSubmitting(false);
-        return; // Prevent further execution
+        return; 
       }
 
       setIsSubmitting(true);
       setError(null);
       setSuccessMessage('');
-      setIsDisabled(true); // Disable input during processing
+      setIsDisabled(true); 
 
       const timestamp = formatTimestamp(new Date());
       const dateOfScan = formatDate(new Date());
 
       const updatedFormData = {
         ...formData,
-        nexsId: formData.nexsId.trim(), // Trim spaces from nexsId
+        nexsId: formData.nexsId.trim(), 
         dateOfScan,
         timestamp,
       };
 
       try {
-        // Check for redundancy
         const { data } = await axios.get('http://192.168.27.143:5000/api/check-duplicate', {
           params: { skuId: formData.skuId }
         });
@@ -102,15 +100,14 @@ const DataEntry = () => {
         setError('There was an error submitting the data. Please try again.');
       } finally {
         setTimeout(() => {
-          setIsDisabled(false); // Re-enable input after 10 seconds
+          setIsDisabled(false); 
           setFormData((prevState) => ({
             ...prevState,
-            skuId: '', // Clear the SKU ID field
+            skuId: '', 
           }));
-          // Use a callback to ensure focus happens after state updates
           setTimeout(() => {
             if (skuInputRef.current) {
-              skuInputRef.current.focus(); // Focus on the SKU ID input
+              skuInputRef.current.focus(); 
             }
           }, 0);
         }, 10000);
@@ -123,10 +120,23 @@ const DataEntry = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: name === 'nexsId' ? value.trim().toUpperCase() : value, // Trim spaces and convert nexsId to uppercase
-    }));
+
+    if (name === 'skuId') {
+      if (value.startsWith('SNXS')) {
+        setError(null); 
+        setFormData((prevState) => ({
+          ...prevState,
+          [name]: value, 
+        }));
+      } else {
+        setError('SKU ID must start with "SNXS".');
+      }
+    } else {
+      setFormData((prevState) => ({
+        ...prevState,
+        [name]: name === 'nexsId' ? value.trim().toUpperCase() : value, 
+      }));
+    }
   };
 
   return (
@@ -146,7 +156,7 @@ const DataEntry = () => {
             autoFocus
             ref={skuInputRef}
             maxLength="20"
-            disabled={isDisabled} // Disable input if isDisabled is true
+            disabled={isDisabled} 
           />
         </div>
         <div className="form-group">
@@ -157,7 +167,7 @@ const DataEntry = () => {
             value={formData.stationId}
             onChange={handleChange}
             required
-            disabled={isDisabled} // Disable input if isDisabled is true
+            disabled={isDisabled} 
           >
             <option value="" disabled>Select Station ID</option>
             {[...Array(20).keys()].map(i => (
@@ -181,7 +191,7 @@ const DataEntry = () => {
             value={formData.nexsId}
             onChange={handleChange}
             placeholder="NEXS ID"
-            disabled={isDisabled} // Disable input if isDisabled is true
+            disabled={isDisabled} 
           />
         </div>
       </form>
