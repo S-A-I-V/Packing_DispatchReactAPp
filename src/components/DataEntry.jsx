@@ -22,7 +22,8 @@ const DataEntry = () => {
   }, []);
 
   useEffect(() => {
-    if (formData.skuId.length === 20 && !isSubmitting) {
+    // Trigger scan when skuId is exactly 20 characters
+    if (formData.skuId.trim().length === 20 && !isSubmitting) {
       handleScan();
     }
   }, [formData.skuId]);
@@ -58,7 +59,9 @@ const DataEntry = () => {
   };
 
   const handleScan = async () => {
-    if (formData.skuId.length === 20 && !isSubmitting) {
+    const trimmedSkuId = formData.skuId.trim(); // Trim spaces
+
+    if (trimmedSkuId.length === 20 && !isSubmitting) {
       if (formData.stationId === '' || formData.nexsId === '00000001') {
         setError('Station ID or NEXS ID cannot be default values.');
         setIsSubmitting(false);
@@ -75,6 +78,7 @@ const DataEntry = () => {
 
       const updatedFormData = {
         ...formData,
+        skuId: trimmedSkuId, // Use the trimmed SKU ID
         nexsId: formData.nexsId.trim(), 
         dateOfScan,
         timestamp,
@@ -82,7 +86,7 @@ const DataEntry = () => {
 
       try {
         const { data } = await axios.get('http://192.168.27.143:5000/api/check-duplicate', {
-          params: { skuId: formData.skuId }
+          params: { skuId: trimmedSkuId }
         });
 
         if (data.isDuplicate) {
@@ -114,7 +118,7 @@ const DataEntry = () => {
         setIsSubmitting(false);
       }
     } else {
-      setError('SKU ID must be exactly 20 characters and field should be blank before scanning.');
+      setError('SKU ID must be exactly 20 characters long and should start with "SNXS".');
     }
   };
 
@@ -122,11 +126,12 @@ const DataEntry = () => {
     const { name, value } = e.target;
 
     if (name === 'skuId') {
-      if (value.startsWith('SNXS')) {
+      const trimmedValue = value.trim();
+      if (trimmedValue.startsWith('SNXS')) {
         setError(null); 
         setFormData((prevState) => ({
           ...prevState,
-          [name]: value, 
+          [name]: trimmedValue, // Set the trimmed value
         }));
       } else {
         setError('SKU ID must start with "SNXS".');
