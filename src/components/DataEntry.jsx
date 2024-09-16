@@ -22,7 +22,7 @@ const DataEntry = () => {
   }, []);
 
   useEffect(() => {
-    // Trigger scan when skuId is exactly 20 characters
+    // Trigger scan when skuId is exactly 20 characters and matches the required pattern
     if (formData.skuId.trim().length === 20 && !isSubmitting) {
       handleScan();
     }
@@ -61,7 +61,10 @@ const DataEntry = () => {
   const handleScan = async () => {
     const trimmedSkuId = formData.skuId.trim(); // Trim spaces
 
-    if (trimmedSkuId.length === 20 && !isSubmitting) {
+    // Regular expression to check if skuId is of the form "SNXS" followed by exactly 16 digits
+    const skuIdPattern = /^SNXS\d{16}$/;
+
+    if (skuIdPattern.test(trimmedSkuId) && !isSubmitting) {
       if (formData.stationId === '' || formData.nexsId === '00000001') {
         setError('Station ID or NEXS ID cannot be default values.');
         setIsSubmitting(false);
@@ -118,7 +121,7 @@ const DataEntry = () => {
         setIsSubmitting(false);
       }
     } else {
-      setError('SKU ID must be exactly 20 characters long and should start with "SNXS".');
+      setError('SKU ID must be of the form "SNXS" followed by exactly 16 digits.');
     }
   };
 
@@ -127,15 +130,10 @@ const DataEntry = () => {
 
     if (name === 'skuId') {
       const trimmedValue = value.trim();
-      if (trimmedValue.startsWith('SNXS')) {
-        setError(null); 
-        setFormData((prevState) => ({
-          ...prevState,
-          [name]: trimmedValue, // Set the trimmed value
-        }));
-      } else {
-        setError('SKU ID must start with "SNXS".');
-      }
+      setFormData((prevState) => ({
+        ...prevState,
+        [name]: trimmedValue, // Set the trimmed value
+      }));
     } else {
       setFormData((prevState) => ({
         ...prevState,
