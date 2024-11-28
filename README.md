@@ -1,20 +1,20 @@
-# 🚚 Packing and Dispatch Monitoring System
+# Packing and Dispatch Monitoring System
 
 Welcome to the **Packing and Dispatch Monitoring System**! This project is designed to streamline the process of packing and dispatching items in a warehouse setting by utilizing a responsive **React.js** web application. The application offers real-time barcode scanning, data entry, and a user-friendly interface for managing and monitoring the packing process.
 
 ## 📑 Table of Contents
 
-- [✨ Features](#-features)
-- [🛠 Tech Stack](#-tech-stack)
-- [🚀 Installation](#-installation)
-- [🔧 Usage](#-usage)
-- [📂 Project Structure](#-project-structure)
-- [🔐 Environment Variables](#-environment-variables)
-- [🤝 Contributing](#-contributing)
-- [📄 License](#-license)
-- [📬 Contact](#-contact)
+- [ Features](#-features)
+- [ Tech Stack](#-tech-stack)
+- [ Installation](#-installation)
+- [ Usage](#-usage)
+- [ Project Structure](#-project-structure)
+- [ Environment Variables](#-environment-variables)
+- [ Contributing](#-contributing)
+- [ License](#-license)
+- [ Contact](#-contact)
 
-## ✨ Features
+## Features
 
 - **Real-time Barcode Scanning**: Seamless integration with barcode readers for efficient data entry.
 - **Redundancy Tracking**: Automatically detects and alerts on duplicate entries to prevent errors.
@@ -23,7 +23,7 @@ Welcome to the **Packing and Dispatch Monitoring System**! This project is desig
 - **Responsive Design**: A user-friendly interface that adapts to various screen sizes.
 - **Customizable Order Types**: Dropdown selection for order types such as Customer (C) or Store (S).
 
-## 🛠 Tech Stack
+## Tech Stack
 
 - **Frontend**: React.js
 - **Backend**: Node.js, Express.js
@@ -32,7 +32,7 @@ Welcome to the **Packing and Dispatch Monitoring System**! This project is desig
 - **Containerization**: Docker
 - **Version Control**: Git, GitHub
 
-## 🚀 Installation
+## Installation
 
 ### Prerequisites
 
@@ -86,12 +86,12 @@ Welcome to the **Packing and Dispatch Monitoring System**! This project is desig
 
 - **CSV Export**: Export the current data set as a CSV file for further analysis.
 
-## 📂 Project Structure
+## Project Structure
 
 Packing_DispatchReactAPp/ ├── public/ ├── src/ │ ├── components/ │ ├── pages/ │ ├── services/ │ ├── App.js │ ├── index.js ├── .env ├── package.json ├── Dockerfile ├── docker-compose.yml └── README.md
 
 
-## 🔐 Environment Variables
+## Environment Variables
 
 Create a `.env` file in the root directory and configure the following variables:
 
@@ -102,7 +102,7 @@ DB_PASSWORD=your_password
 DB_NAME=packing_dispatch
 
 
-## 🤝 Contributing
+## Contributing
 We welcome contributions! If you'd like to contribute, please fork the repository and submit a pull request.
 
 Steps to Contribute:
@@ -113,10 +113,10 @@ Commit your changes (git commit -m 'Add some feature').
 Push to the branch (git push origin feature-branch).
 Open a pull request.
 
-## 📄 License
+## License
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## 📬 Contact
+## Contact
 For any questions or suggestions, please feel free to reach out:
 
 GitHub: S-A-I-V
