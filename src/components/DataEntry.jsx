@@ -173,12 +173,12 @@ const DataEntry = () => {
             disabled={isDisabled} 
           >
             <option value="" disabled>Select Station ID</option>
-            {[...Array(20).keys()].map(i => (
+            {[...Array(30).keys()].map(i => (
               <option key={`P${String(i + 1).padStart(3, '0')}`} value={`P${String(i + 1).padStart(3, '0')}`}>
                 P{String(i + 1).padStart(3, '0')}
               </option>
             ))}
-            {[...Array(10).keys()].map(i => (
+            {[...Array(25).keys()].map(i => (
               <option key={`F${String(i + 1).padStart(3, '0')}`} value={`F${String(i + 1).padStart(3, '0')}`}>
                 F{String(i + 1).padStart(3, '0')}
               </option>
